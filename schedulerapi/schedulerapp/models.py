@@ -25,17 +25,26 @@ class User(models.Model):
 
 class Lesson(models.Model):
     DAYS = (
-        ('Mo', 'Monday'),
-        ('Tu', 'Tuesday'),
-        ('We', 'Wednesday'),
-        ('Th', 'Thursday'),
-        ('Fr', 'Friday'),
+        (1, 'Monday'),
+        (2, 'Tuesday'),
+        (3, 'Wednesday'),
+        (4, 'Thursday'),
+        (5, 'Friday'),
     )
-    day = models.CharField(max_length=80, choices=DAYS, default='Mo')
+    WEEKS = (
+        (0, 'Всі'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, 'Непарні'),
+        (6, 'Парні'),
+    )
+    day = models.CharField(max_length=80, choices=DAYS, default=1)
     number = models.IntegerField()
     teacher = models.CharField(max_length=100, blank=False)
     subject = models.CharField(max_length=100, blank=False)
-    week = models.PositiveIntegerField(default=0)
+    week = models.IntegerField(default=0, choices=WEEKS)
     group = models.ForeignKey(
         'Group',
         related_name='lessons',

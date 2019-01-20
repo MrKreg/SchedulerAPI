@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import filters
-from django_filters import AllValuesFilter, AllValuesMultipleFilter
+from django_filters import AllValuesFilter, MultipleChoiceFilter
 from django_filters import Filter
 from django_filters import FilterSet
 from django_filters.fields import Lookup
@@ -11,15 +11,14 @@ from schedulerapp.models import *
 from schedulerapp.serializers import *
 
 class LessonFilter(FilterSet):
-    day = AllValuesFilter(field_name='day')
-    group = AllValuesFilter(field_name='group')
-    week = AllValuesMultipleFilter(field_name='week')
+    group_name = AllValuesFilter(field_name='group__name')
+    week = MultipleChoiceFilter(field_name='week', choices=Lesson.WEEKS)
 
     class Meta:
         model = Lesson
         fields = (
             'day',
-            'group',
+            'group_name',
             'week',
         )
 
