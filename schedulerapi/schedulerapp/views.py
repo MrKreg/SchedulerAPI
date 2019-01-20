@@ -73,4 +73,4 @@ class ApiRoot(generics.GenericAPIView):
             'lessons': reverse(LessonList.name, request=request),
         })
 
-bla
+blabla
