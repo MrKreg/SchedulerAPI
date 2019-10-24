@@ -1,14 +1,9 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import filters
 from django_filters import AllValuesFilter, MultipleChoiceFilter
-from django_filters import Filter
 from django_filters import FilterSet
-from django_filters.fields import Lookup
-from schedulerapp.models import *
-from schedulerapp.serializers import *
+
 
 class LessonFilter(FilterSet):
     group_name = AllValuesFilter(field_name='group__name')

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from schedulerapp.models import Group, User, Lesson
+from app.pkg.scheduler import Group, User, Lesson
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
