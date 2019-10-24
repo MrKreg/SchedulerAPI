@@ -1,60 +1,41 @@
+from django.contrib.postgres.fields import ArrayField
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from model_utils.models import TimeFramedModel
 
-class Group(models.Model):
-    name = models.CharField(max_length=8, blank=False)
+from app.pkg.scheduler.choices import LessonType, Weekdays
+from app.pkg.scheduler.constants import ALL_WEEKS
 
-    class Meta:
-        ordering = ('name',)
 
-    def __str__(self):
-        return self.name
+class Schedule(TimeFramedModel):
+    is_active = models.BooleanField(_('is active'), default=False)
 
-class User(models.Model):
-    id = models.IntegerField(primary_key=True)
-    group = models.ForeignKey(
-        'Group',
-        related_name='groups',
-        on_delete=models.CASCADE,
-    )
-
-    class Meta:
-        ordering = ('id',)
-    
-    def __str__(self):
-        return self.id
 
 class Lesson(models.Model):
-    DAYS = (
-        (1, 'Monday'),
-        (2, 'Tuesday'),
-        (3, 'Wednesday'),
-        (4, 'Thursday'),
-        (5, 'Friday'),
+    day = models.PositiveSmallIntegerField(choices=Weekdays.choices(), default=Weekdays.MONDAY.value)
+    week = ArrayField(
+        models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)]),
+        size=4,
+        default=ALL_WEEKS
     )
-    WEEKS = (
-        (0, 'Всі'),
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, 'Непарні'),
-        (6, 'Парні'),
-    )
-    day = models.CharField(max_length=80, choices=DAYS, default=1)
-    number = models.IntegerField()
-    teacher = models.CharField(max_length=100, blank=False)
-    subject = models.CharField(max_length=100, blank=False)
-    week = models.IntegerField(default=0, choices=WEEKS)
-    group = models.ForeignKey(
-        'Group',
-        related_name='lessons',
-        on_delete=models.CASCADE,
-    )
-    classroom = models.CharField(max_length=100, blank=False, null=True)
+
+    info = models.ForeignKey('info.LessonInfo', related_name='lessons', on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, related_name='lessons', on_delete=models.CASCADE)
+
+    number = models.PositiveSmallIntegerField(validators=[MaxValueValidator(7)])
+    classroom = models.CharField(max_length=10)
+
+    type = models.CharField(max_length=10, choices=LessonType.choices(), default=LessonType.LECTURE.value)
+
+    @property
+    def is_lecture(self):
+        return self.type == LessonType.LECTURE.value
+
+    @property
+    def is_lab(self):
+        return self.type == LessonType.LAB.value
 
     class Meta:
-        ordering = ('day','number',)
-        unique_together = (('day','number','teacher','subject','week','group','classroom'),)
-
-    def __str__(self):
-        return self.subject
+        ordering = ('day', 'number',)
+        unique_together = ('day', 'number', 'week', 'classroom',)

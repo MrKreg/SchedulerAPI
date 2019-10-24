@@ -1,0 +1,3 @@
+ALL_WEEKS = [1, 2, 3, 4]
+EVEN_WEEKS = [2, 4]
+ODD_WEEKS = [1, 3]
