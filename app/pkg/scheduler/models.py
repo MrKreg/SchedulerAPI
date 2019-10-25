@@ -24,7 +24,7 @@ class Lesson(models.Model):
     schedule = models.ForeignKey(Schedule, related_name='lessons', on_delete=models.CASCADE)
 
     number = models.PositiveSmallIntegerField(validators=[MaxValueValidator(7)])
-    classroom = models.CharField(max_length=10)
+    classroom = models.ForeignKey('info.Classroom', related_name='lessons', on_delete=models.CASCADE)
 
     type = models.CharField(max_length=10, choices=LessonType.choices(), default=LessonType.LECTURE.value)
 

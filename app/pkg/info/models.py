@@ -24,3 +24,9 @@ class LessonInfo(models.Model):
 
     subject = models.ForeignKey(Subject, related_name='lessons_info', on_delete=models.CASCADE)
     group = models.ForeignKey('users.Group', related_name='lessons_info', on_delete=models.CASCADE)
+
+
+class Classroom(models.Model):
+    floor = models.PositiveSmallIntegerField(null=True)
+    block = models.CharField(max_length=10)
+    number = models.PositiveSmallIntegerField()
