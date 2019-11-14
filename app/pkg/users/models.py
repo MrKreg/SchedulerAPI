@@ -15,6 +15,7 @@ class User(models.Model):
     telegram_id = models.IntegerField()
     group = models.ForeignKey(
         Group,
+        null=True,
         related_name='users',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
     )
