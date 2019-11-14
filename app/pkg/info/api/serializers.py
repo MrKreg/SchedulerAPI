@@ -34,6 +34,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 class LessonInfoSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
+    second_teacher = TeacherSerializer()
 
     class Meta:
         fields = '__all__'
@@ -43,7 +44,7 @@ class LessonInfoSerializer(serializers.ModelSerializer):
 # CLASSROOM SERIALIZERS
 # ****************************************************************************
 
-class ClassRoomSerializer(serializers.ModelSerializer):
+class ClassroomSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = '__all__'

@@ -2,31 +2,30 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from model_utils.models import TimeFramedModel
 
 from app.pkg.scheduler.choices import LessonType, Weekdays
 from app.pkg.scheduler.constants import ALL_WEEKS
 
 
-class Schedule(TimeFramedModel):
-    is_active = models.BooleanField(_('is active'), default=False)
-
-
 class Lesson(models.Model):
-    day = models.PositiveSmallIntegerField(choices=Weekdays.choices(), default=Weekdays.MONDAY.value)
-    week = ArrayField(
+    day = models.PositiveSmallIntegerField(_('weekday'), choices=Weekdays.choices(), default=Weekdays.MONDAY.value)
+    weeks = ArrayField(
+        _('weeks'),
         models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)]),
         size=4,
         default=ALL_WEEKS
     )
 
     info = models.ForeignKey('info.LessonInfo', related_name='lessons', on_delete=models.CASCADE)
-    schedule = models.ForeignKey(Schedule, related_name='lessons', on_delete=models.CASCADE)
-
-    number = models.PositiveSmallIntegerField(validators=[MaxValueValidator(7)])
+    number = models.PositiveSmallIntegerField(_('number'), validators=[MaxValueValidator(7)])
     classroom = models.ForeignKey('info.Classroom', related_name='lessons', on_delete=models.CASCADE)
 
-    type = models.CharField(max_length=10, choices=LessonType.choices(), default=LessonType.LECTURE.value)
+    type = models.CharField(
+        _('lesson type'),
+        max_length=10,
+        choices=LessonType.choices(),
+        default=LessonType.LECTURE.value
+    )
 
     @property
     def is_lecture(self):

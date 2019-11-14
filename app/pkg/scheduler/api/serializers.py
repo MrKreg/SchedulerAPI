@@ -1,22 +1,11 @@
 from rest_framework import serializers
-from app.pkg.scheduler import Group, User, Lesson
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+from app.pkg.info.api.serializers import LessonInfoSerializer, ClassroomSerializer
 
-    class Meta:
-        model = Group
-        fields = ('url','pk','name')
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    group = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='name')
+class LessonSerializer(serializers.ModelSerializer):
+    info = LessonInfoSerializer()
+    classroom = ClassroomSerializer()
 
     class Meta:
-        model = User
-        fields = ('url','pk','group')
-
-class LessonSerializer(serializers.HyperlinkedModelSerializer):
-    group = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='name')
-
-    class Meta:
-        model = Lesson
-        fields = ('url','day','number','teacher','subject','classroom','week','group')
+        exclude = ('weeks',)

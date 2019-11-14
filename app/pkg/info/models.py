@@ -17,9 +17,9 @@ class Subject(models.Model):
 
 
 class LessonInfo(models.Model):
-    teacher = models.ForeignKey(Teacher, related_name='teacher_lessons_info', on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, related_name='lessons_info', on_delete=models.CASCADE)
     second_teacher = models.ForeignKey(
-        Teacher, related_name='second_teacher_lessons_info', on_delete=models.CASCADE, null=True
+        Teacher, related_name='lessons_info', on_delete=models.CASCADE, null=True
     )
 
     subject = models.ForeignKey(Subject, related_name='lessons_info', on_delete=models.CASCADE)
