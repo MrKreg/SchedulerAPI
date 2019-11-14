@@ -30,3 +30,7 @@ class Classroom(models.Model):
     floor = models.PositiveSmallIntegerField(null=True)
     block = models.CharField(max_length=10)
     number = models.PositiveSmallIntegerField()
+
+    @property
+    def info(self):
+        return f'{self.block}{self.floor}{self.number}'
