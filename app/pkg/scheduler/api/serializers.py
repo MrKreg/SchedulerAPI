@@ -8,4 +8,12 @@ class LessonSerializer(serializers.ModelSerializer):
     classroom = ClassroomSerializer()
 
     class Meta:
-        exclude = ('weeks',)
+        fields = '__all__'
+
+
+class SimpleLessonSerializer(serializers.ModelSerializer):
+    classroom = serializers.CharField(read_only=True, source='classroom.info')
+    teacher = serializers.CharField(read_only=True, source='info.teacher.initials')
+    second_teacher = serializers.CharField(read_only=True, source='info.second_teacher.initials')
+    subject = serializers.CharField(read_only=True, source='info.subject.name')
+
