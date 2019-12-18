@@ -4,16 +4,15 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from app.pkg.scheduler.choices import LessonType, Weekdays
-from app.pkg.scheduler.constants import ALL_WEEKS
 
 
 class Lesson(models.Model):
     day = models.PositiveSmallIntegerField(_('weekday'), choices=Weekdays.choices(), default=Weekdays.MONDAY.value)
     weeks = ArrayField(
-        _('weeks'),
-        models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)]),
+        verbose_name=_('weeks'),
+        base_field=models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)]),
         size=4,
-        default=ALL_WEEKS
+        default=list
     )
 
     info = models.ForeignKey('info.LessonInfo', related_name='lessons', on_delete=models.CASCADE)
@@ -37,4 +36,4 @@ class Lesson(models.Model):
 
     class Meta:
         ordering = ('day', 'number',)
-        unique_together = ('day', 'number', 'week', 'classroom',)
+        unique_together = ('day', 'number', 'weeks', 'classroom',)

@@ -9,7 +9,7 @@ class Teacher(models.Model):
 
     @property
     def initials(self):
-        return f'{self.last_name} {self.first_name[:1]}. {self.middle_name[:1]}.'
+        return '{} {}. {}.'.format(self.last_name, self.first_name[:1], self.middle_name[:1])
 
 
 class Subject(models.Model):
@@ -17,9 +17,9 @@ class Subject(models.Model):
 
 
 class LessonInfo(models.Model):
-    teacher = models.ForeignKey(Teacher, related_name='lessons_info', on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, related_name='main_lessons_info', on_delete=models.CASCADE)
     second_teacher = models.ForeignKey(
-        Teacher, related_name='lessons_info', on_delete=models.CASCADE, null=True
+        Teacher, related_name='second_lessons_info', on_delete=models.CASCADE, null=True
     )
 
     subject = models.ForeignKey(Subject, related_name='lessons_info', on_delete=models.CASCADE)
@@ -27,10 +27,10 @@ class LessonInfo(models.Model):
 
 
 class Classroom(models.Model):
-    floor = models.PositiveSmallIntegerField(null=True)
+    floor = models.PositiveSmallIntegerField()
     block = models.CharField(max_length=10)
     number = models.PositiveSmallIntegerField()
 
     @property
     def info(self):
-        return f'{self.block}{self.floor}{self.number}'
+        return '{} {}{}'.format(self.block, self.floor, self.number)
