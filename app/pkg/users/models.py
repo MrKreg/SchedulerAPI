@@ -40,7 +40,7 @@ class TgBotInfo(models.Model):
         db_index=True
     )
     group = models.ForeignKey(
-        Group, related_name='users', on_delete=models.SET_NULL, null=True
+        Group, related_name='tg_info', on_delete=models.SET_NULL, null=True
     )
 
     class Meta:
