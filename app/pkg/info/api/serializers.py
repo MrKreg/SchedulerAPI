@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from app.pkg.info.models import Classroom, Lesson, Subject, Teacher
+
 
 # ****************************************************************************
 # TEACHER SERIALIZERS
@@ -8,6 +10,7 @@ from rest_framework import serializers
 class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
+        model = Teacher
         fields = '__all__'
 
 
@@ -15,6 +18,7 @@ class ShortTeacherSerializer(serializers.ModelSerializer):
     initials = serializers.ReadOnlyField()
 
     class Meta:
+        model = Teacher
         fields = ('initials',)
 
 
@@ -25,18 +29,20 @@ class ShortTeacherSerializer(serializers.ModelSerializer):
 class SubjectSerializer(serializers.ModelSerializer):
 
     class Meta:
+        model = Subject
         fields = '__all__'
 
 
 # ****************************************************************************
-# LESSON INFO SERIALIZERS
+# LESSON SERIALIZERS
 # ****************************************************************************
 
-class LessonInfoSerializer(serializers.ModelSerializer):
+class LessonSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
     second_teacher = TeacherSerializer()
 
     class Meta:
+        model = Lesson
         fields = '__all__'
 
 
@@ -47,6 +53,7 @@ class LessonInfoSerializer(serializers.ModelSerializer):
 class ClassroomSerializer(serializers.ModelSerializer):
 
     class Meta:
+        model = Classroom
         fields = '__all__'
 
 
@@ -54,4 +61,5 @@ class ShortClassRoomSerializer(serializers.ModelSerializer):
     info = serializers.ReadOnlyField()
 
     class Meta:
+        model = Classroom
         fields = ('info',)

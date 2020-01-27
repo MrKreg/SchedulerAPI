@@ -104,6 +104,8 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.User'
 
+SITE_ID = 1
+
 # Internationalization
 
 LANGUAGE_CODE = 'en-us'
