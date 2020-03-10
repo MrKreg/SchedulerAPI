@@ -16,9 +16,15 @@ class Teacher(models.Model):
     def initials(self):
         return '{} {}. {}.'.format(self.last_name, self.first_name[:1], self.middle_name[:1])
 
+    def __str__(self):
+        return self.initials
+
 
 class Subject(models.Model):
     name = models.CharField(_('subject name'), max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Lesson(models.Model):
@@ -40,3 +46,6 @@ class Classroom(models.Model):
     @property
     def info(self):
         return '{} {}{}'.format(self.block, self.floor, self.number)
+
+    def __str__(self):
+        return self.info
